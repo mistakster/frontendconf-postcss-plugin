@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Два плагина к PostCSS для управления цветом &mdash; Владимир Кузнецов, Хантфлоу</title>
+    <title>Плагин к PostCSS для замены цвета в стилях &mdash; Владимир Кузнецов, Хантфлоу</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="shower/themes/material/styles/styles.css">
     <style>
         .shower {
-            --slide-ratio: calc(16 / 10);
+            --slide-ratio: calc(16 / 9);
         }
 
         .b {
@@ -22,34 +22,6 @@
             margin-top: 0;
         }
 
-        .stamp {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 264px;
-            height: 264px;
-            opacity: 0;
-            transform: scale(2);
-            transition: opacity 1s, transform 1s;
-        }
-
-        .stamp.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .color-sample-col {
-            width: 150px !important;
-            text-align: center !important;
-        }
-
-        .color-sample {
-            display: block;
-            height: 3em;
-            width: 3em;
-            margin: 0.5em auto;
-        }
-
         .tiny-sample {
             display: inline-block;
             width: 0.8em;
@@ -57,62 +29,29 @@
             vertical-align: baseline;
         }
 
-        #cover {
-            --spot-0-x: 0;
-            --spot-0-y: 0;
-            --spot-1-x: 0;
-            --spot-1-y: 0;
-            --spot-2-x: 0;
-            --spot-2-y: 0;
-            background: black;
-            color: white;
-        }
-
-        .spot {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            left: calc(50% - 300px);
-            top: calc(50% - 300px);
-            mix-blend-mode: screen;
-        }
-
-        .spot_0 {
-            background: rgb(120, 0, 0);
-            transform: translate(var(--spot-0-x), var(--spot-0-y));
-        }
-
-        .spot_1 {
-            background: rgb(0, 120, 0);
-            transform: translate(var(--spot-1-x), var(--spot-1-y));
-        }
-
-        .spot_2 {
-            background: rgb(0, 0, 120);
-            transform: translate(var(--spot-2-x), var(--spot-2-y));
+        .double {
+            font-weight: 100;
+            font-size: 48px;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body class="shower full">
 
 <header class="caption">
-    <h1>Два плагина к PostCSS для управления цветом</h1>
-    <p>Владимир Кузнецов, Хантфлоу</p>
+    <h1>Плагин к&nbsp;PostCSS для замены цвета в&nbsp;стилях</h1>
+    <p>Владимир Кузнецов (Хантфлоу)</p>
 </header>
 
-<section id="cover" class="slide clear">
-    <div class="cover w h">
-        <div class="spot spot_0"></div>
-        <div class="spot spot_1"></div>
-        <div class="spot spot_2"></div>
-    </div>
-    <div style="text-align: center">
-        <h2 style="margin-top: 80px; color: white">
+<section id="cover" class="slide clear" style="background: black;">
+    <img src="img/cover.png" class="cover w h">
+    <div>
+        <h2 style="font-weight: 400;">
             Два плагина к PostCSS для управления цветом
         </h2>
-        <p>Владимир Кузнецов, Хантфлоу</p>
-        <p>FrontTalks, 2018</p>
+        <p style="font-size: 48px; font-weight: 100; line-height: 1;">
+            Владимир Кузнецов<br>(Хантфлоу)
+        </p>
     </div>
 </section>
 
@@ -139,7 +78,6 @@
     <div class="columns two">
         <div>
             <ul>
-                <li>cssnext</li>
                 <li>postcss-custom-properties</li>
                 <li>pixrem</li>
                 <li>postcss-unmq</li>
@@ -194,45 +132,76 @@
 </section>
 
 <section class="slide">
-    <p>
-        Может оказаться, что существующий плагин решает задачу,<br>
-        но не так как вам хотелось бы.<br>
-        <strong>Что делать?</strong>
-    </p>
-
-    <ol class="next">
+    <h2>Нет подходящего плагина?</h2>
+    <ol class="double next">
         <li>Смириться.</li>
-        <li>Сделать PR в плагин.</li>
-        <li>Написать свой плагин.</li>
+        <li class="next">Сделать PR в плагин.</li>
+        <li class="next">Написать свой плагин.</li>
     </ol>
-
-    <img src="img/emoji-doubt.png" alt="Сомнения" class="stamp next">
 </section>
 
 <section class="slide">
-    <h2 class="shout">Мой первый плагин</h2>
+    <h2 class="shout"><a href="https://api.postcss.org">api.postcss.org</a></h2>
 </section>
 
 <section class="slide">
-    <h2><a href="https://github.com/mistakster/postcss-unwrap-at-media">postcss-unwrap-at-media</a></h2>
-    <div class="columns two" style="font-size: 90%;">
+    <h2>Обход дерева</h2>
+    <div class="columns two">
         <div>
-            <pre><code><span class="comment">/* Input */</span></code>
-<code>.block { width: 100%; }</code>
-<code>@media (min-width: 720px) {</code>
-<code>  .block { width: 25%; }</code>
-<code>}</code></pre>
+            <p><strong>Типы узлов</strong></p>
+            <ul>
+                <li>rule <span class="c">(div, .list)</span></li>
+                <li>declaration <span class="c">(color, background)</span></li>
+                <li>@rule <span class="c">(media, charset)</span></li>
+                <li>comment</li>
+            </ul>
         </div>
         <div>
-            <pre><code><span class="comment">/* Output */</span></code>
-<code>.block { width: 100%; }</code>
-<code>.block { width: 25%; }</code></pre>
+            <p><strong>Методы обхода</strong></p>
+            <ul>
+                <li>walkRules()</li>
+                <li>walkDecls()</li>
+                <li>walkAtRules()</li>
+                <li>walkComments()</li>
+                <li>walk()</li>
+            </ul>
         </div>
     </div>
 </section>
 
 <section class="slide">
-    <h2 class="shout">Пример №1</h2>
+    <pre style="font-size: 90%;">
+        <code>#main, div.sidebar {</code>
+        <code>  background: white; color: rgb(47, 79, 79);</code>
+        <code>}</code>
+    </pre>
+    <pre style="font-size: 90%;">
+        <code>{ type: "root", nodes: [</code>
+        <code>  { type: "rule", selector: "<mark>#main, div.sidebar</mark>", nodes: [</code>
+        <code>    { type: "decl", prop: "<mark>background</mark>", value: "<mark>white</mark>" },</code>
+        <code>    { type: "decl", prop: "<mark>color</mark>", value: "<mark>rgb(47, 79, 79)</mark>" }</code>
+        <code>  ] }</code>
+        <code>] }</code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2 class="shout">
+        <span class="b">Abstract</span>
+        <span class="b">Syntax</span>
+        <span class="b">Tree</span>
+    </h2>
+</section>
+
+<section class="slide clear">
+    <img src="img/ast-explorer.png" class="cover w">
+    <!--
+    https://astexplorer.net/#/gist/43328fc584ad1b12b54120222632a8d2/c8722503e6fb77d6a4163d7b14617946facffcb2
+    -->
+</section>
+
+<section class="slide">
+    <h2 class="shout">Постановка<br>задачи</h2>
 </section>
 
 <section class="slide">
@@ -269,35 +238,6 @@ a { color: <mark>#556832</mark>; }
   border-left: 1px solid <mark>#556832</mark>;
   border-right: solid <mark>#556832</mark> 1px;
 }</code></pre>
-</section>
-
-<section class="slide">
-    <h2 class="shout"><a href="https://api.postcss.org">api.postcss.org</a></h2>
-</section>
-
-<section class="slide">
-    <h2>Обход дерева</h2>
-    <div class="columns two">
-        <div>
-            <p><strong>Типы узлов</strong></p>
-            <ul>
-                <li>rule <span class="c">(div, .list)</span></li>
-                <li>declaration <span class="c">(color, background)</span></li>
-                <li>@rule <span class="c">(media, charset)</span></li>
-                <li>comment</li>
-            </ul>
-        </div>
-        <div>
-            <p><strong>Методы обхода</strong></p>
-            <ul>
-                <li>walkRules()</li>
-                <li>walkDecls()</li>
-                <li>walkAtRules()</li>
-                <li>walkComments()</li>
-                <li>walk()</li>
-            </ul>
-        </div>
-    </div>
 </section>
 
 <section class="slide">
@@ -512,7 +452,6 @@ a { color: <mark>#556832</mark>; }
         <code>  ] }</code>
         <code>] }</code>
     </pre>
-    <img src="img/emoji-blow.png" alt="Взрывающаяся голова" class="stamp next">
 </section>
 
 
@@ -523,371 +462,6 @@ a { color: <mark>#556832</mark>; }
         <li>Разобрались с API PostCSS и CSSTree.</li>
         <li>Написали плагин, который делает больше, чем просто поиск и замена в текстовом редакторе.</li>
     </ol>
-</section>
-
-<section class="slide">
-    <h2 class="shout">Пример №2</h2>
-</section>
-
-<section class="slide">
-    <h2><a href="https://github.com/mistakster/postcss-themes-generator">postcss-themes-generator</a></h2>
-    <table style="table-layout: fixed;">
-        <tbody>
-        <tr>
-            <th class="color-sample-col">&nbsp;</th>
-            <th class="color-sample-col">Website</th>
-            <th class="color-sample-col">Portal</th>
-            <th class="color-sample-col">Business</th>
-            <th class="color-sample-col">International</th>
-            <th></th>
-        </tr>
-        <tr>
-            <th>Primary</th>
-            <td><span class="color-sample" style="background: #e54096">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #0080c5">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #c1d730">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #e5352d">&nbsp;</span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Secondary</th>
-            <td><span class="color-sample" style="background: #0080c5">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #044466">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #044466">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #007bc0">&nbsp;</span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Accent</th>
-            <td><span class="color-sample" style="background: #c1d730">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #c1d730">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #0080c5">&nbsp;</span></td>
-            <td><span class="color-sample" style="background: #bd0a26">&nbsp;</span></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
-<section class="slide clear">
-    <h2>Тема «Website»</h2>
-    <img src="img/theme-website.png" style="width: 100%">
-</section>
-
-<section class="slide clear">
-    <h2>Тема «Student Portal»</h2>
-    <img src="img/theme-portal.png" style="width: 100%">
-</section>
-
-<section class="slide clear">
-    <h2>Тема «International»</h2>
-    <img src="img/theme-international.png" style="width: 100%">
-</section>
-
-<section class="slide clear">
-    <h2>Тема «Business»</h2>
-    <img src="img/theme-business.png" style="width: 100%">
-</section>
-
-<section class="slide">
-    <h2>CSS custom properties</h2>
-    <pre>
-        <code>:root                { --primary-color: <span style="background: #e54096;" class="tiny-sample"></span> #E54096; }</code>
-        <code>.theme-portal        { --primary-color: <span style="background: #0080c5;" class="tiny-sample"></span> #0080C5; }</code>
-        <code>.theme-business      { --primary-color: <span style="background: #c1d730;" class="tiny-sample"></span> #C1D730; }</code>
-        <code>.theme-international { --primary-color: <span style="background: #e5352d;" class="tiny-sample"></span> #E5352D; }</code>
-        <code>.tile_primary { background: var(--primary-color); }</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <h2>Решения</h2>
-    <ul>
-        <li>Использовать CSS custom properties.</li>
-        <li>Создавать 4 различных CSS-файла, меняя переменные препроцессора.</li>
-        <li>Генерировать стили, используя PostCSS.</li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Условия задачи</h2>
-    <ul>
-        <li>Мы&nbsp;пишем CSS как обычно, подразумевая базовую цветовую схему.</li>
-        <li>Мы&nbsp;используем модификаторы блока или элемента (&laquo;primary&raquo;, &laquo;secondary&raquo;
-            и&nbsp;&laquo;accent&raquo;) для указания цвета.
-        </li>
-        <li>Плагин для PostCSS генерирует дополнительные селекторы, изменяя
-            в&nbsp;них цвет согласно схемы.
-        </li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Конфигурация</h2>
-    <pre><code>[ { "name": "primary", "match": "#E54096",
-  "themes": {
-    "portal": "#0080C5",
-    "business": "#C1D730",
-    "international": "#E5352D"
-  }
-}, { name: "secondary", &hellip; } ]</code></pre>
-</section>
-
-<section class="slide">
-    <h2>Результат</h2>
-    <pre>
-        <code class="mark">.tile_primary { color: <span style="background: #e54096;" class="tiny-sample"></span> #E54096 }</code>
-        <code>.theme-portal .tile_primary { color: <span style="background: #0080c5;" class="tiny-sample"></span> #0080C5 }</code>
-        <code>.theme-business .tile_primary { color: <span style="background: #c1d730;" class="tiny-sample"></span> #C1D730 }</code>
-        <code>.theme-international .tile_primary { color: <span style="background: #e5352d;" class="tiny-sample"></span> #E5352D }</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>const plugin = options => (root, result) => {</code>
-		<code>  root.walkRules(rule => {</code>
-        <code class="mark next">    const config = getConfig(rule, options);</code>
-        <code>    const themed = Object.keys(config.themes)</code>
-        <code>      .map(name => makeThemedRule(rule, name, config));</code>
-        <code>    themed.unshift(rule.clone());</code>
-        <code>    rule.replaceWith(themed);</code>
-        <code>  });</code>
-        <code>};</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>function getConfig(rule, options) {</code>
-        <code>  return options.find(config => {</code>
-        <code>    const p = `_${config.name}(:[a-zA-Z]+)?(\\s.*)?$`;</code>
-        <code>    const rx = new RegExp(p);</code>
-        <code>    return rule.selectors.every(s => rx.test(s));</code>
-        <code>  });</code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>{</code>
-        <code>  "name": "primary",</code>
-        <code>  "match": "#E54096",</code>
-        <code>  "themes": {</code>
-        <code>    "portal": "#0080C5",</code>
-        <code>    "business": "#C1D730",</code>
-        <code>    "international": "#E5352D"</code>
-        <code>  }</code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>const plugin = options => (root, result) => {</code>
-		<code>  root.walkRules(rule => {</code>
-        <code>    const config = getConfig(rule, options);</code>
-        <code>    const themed = Object.keys(config.themes)</code>
-        <code class="mark next">      .map(name => makeThemedRule(rule, name, config));</code>
-        <code>    themed.unshift(rule.clone());</code>
-        <code>    rule.replaceWith(themed);</code>
-        <code>  });</code>
-        <code>};</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>function makeThemedRule(rule, themeName, config) {</code>
-        <code>  const themedRule = rule.clone();</code>
-        <code>  themedRule.selectors = themedRule.selectors</code>
-        <code>    .map(selector => `.theme-${themeName} ${selector}`);</code>
-        <code class="mark next">  const processor = getDeclProcessor(themeName, config);</code>
-        <code>  themedRule.walkDecls(processor);</code>
-        <code>  return themedRule;</code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <pre>
-        <code>function getDeclProcessor(themeName, config) {</code>
-        <code>  return decl => {</code>
-        <code>    const ast = cssTree</code>
-        <code>      .parse(decl.value, { context: 'value' });</code>
-        <code>    cssTree.walk(ast, { visit: 'HexColor', &hellip; });</code>
-        <code>    cssTree.walk(ast, { visit: 'Function', &hellip; });</code>
-        <code>    decl.value = cssTree.generate(ast);</code>
-        <code>  };</code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <h2>Подозрительное правило</h2>
-    <p>Модификатор есть, а изменить ничего нельзя!</p>
-    <pre><code>rule.warn(result, 'Suspicious rule');</code></pre>
-
-    <img src="img/emoji-suspect.png" alt="Подозрения" class="stamp next">
-</section>
-
-<section class="slide">
-    <h2>Сложные случаи</h2>
-    <pre>
-        <code>.tile_<mark>primary</mark> .text-tile__heading {</code>
-        <code>  color: #E54096;</code>
-        <code>}</code>
-        <code>.tile__badge_<mark>primary</mark>:hover {</code>
-        <code>  background-color: #E54096;</code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <h2>Светлые и тёмные оттенки</h2>
-    <pre>
-        <code>.button_primary[disabled] { </code>
-        <code>  background: lighten(<span style="background: #e54096;" class="tiny-sample"></span> #E54096, 20%); <span
-                class="comment">/* <span style="background: #f19ac7;"
-                class="tiny-sample"></span> #F19AC7 */</span></code>
-        <code>}</code>
-        <code>.overlay_primary {</code>
-        <code>  background: darken(<span style="background: #e54096;" class="tiny-sample"></span> #E54096, 20%); <span
-                class="comment">/* <span style="background: #a81763;"
-                class="tiny-sample"></span> #A81763 */</span></code>
-        <code>}</code>
-    </pre>
-</section>
-
-<section class="slide">
-    <h2>Светлые и тёмные оттенки</h2>
-    <table>
-        <tbody>
-        <tr>
-            <th>Тёмный</th>
-            <th>Базовый</th>
-            <th>Светлый</th>
-        </tr>
-        <tr>
-            <td>
-                <span style="background: hsl(329, 76%, 37%);" class="tiny-sample"></span>
-                hsl(329, 76%, 37%)
-            </td>
-            <td>
-                <span style="background: hsl(329, 76%, 57%);" class="tiny-sample"></span>
-                hsl(329, 76%, 57%)
-            </td>
-            <td>
-                <span style="background: hsl(329, 76%, 77%);" class="tiny-sample"></span>
-                hsl(329, 76%, 77%)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span style="background: hsl(201, 100%, 19%);" class="tiny-sample"></span>
-                hsl(201, 100%, 19%)
-            </td>
-            <td>
-                <span style="background: hsl(201, 100%, 39%);" class="tiny-sample"></span>
-                hsl(201, 100%, 39%)
-            </td>
-            <td>
-                <span style="background: hsl(201, 100%, 59%);" class="tiny-sample"></span>
-                hsl(201, 100%, 59%)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span style="background: hsl(68, 68%, 32%);" class="tiny-sample"></span>
-                hsl(68, 68%, 32%)
-            </td>
-            <td>
-                <span style="background: hsl(68, 68%, 52%);" class="tiny-sample"></span>
-                hsl(68, 68%, 52%)
-            </td>
-            <td>
-                <span style="background: hsl(68, 68%, 72%);" class="tiny-sample"></span>
-                hsl(68, 68%, 72%)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span style="background: hsl(3, 78%, 34%);" class="tiny-sample"></span>
-                hsl(3, 78%, 34%)
-            </td>
-            <td>
-                <span style="background: hsl(3, 78%, 54%);" class="tiny-sample"></span>
-                hsl(3, 78%, 54%)
-            </td>
-            <td>
-                <span style="background: hsl(3, 78%, 74%);" class="tiny-sample"></span>
-                hsl(3, 78%, 74%)
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
-<section class="slide">
-    <p>В цветовом пространстве HSL компоненты <em>hue</em> и <em>saturation</em> будут без изменений,
-        а разницу значений компоненты <em>lightness</em> нужно добавить к цвету темы.</p>
-
-    <p style="white-space: nowrap">
-        <span style="background: #f19ac7;" class="tiny-sample"></span> #F19AC7
-        <span class="next">
-            &rarr; <span style="background: hsl(329, 76%, 77%);" class="tiny-sample"></span> hsl(329, 76%, 77%)
-        </span>
-        <span class="next">
-            &rarr; <span style="background: hsl(329, 76%, 57%);" class="tiny-sample"></span> hsl(329, 76%, 57%)
-        </span>
-        <span class="next">
-            &rarr; &Delta;l = 20%
-        </span>
-    </p>
-    <p style="white-space: nowrap" class="next">
-        <span style="background: #0080C5;" class="tiny-sample"></span> #0080C5
-        <span class="next">
-            &rarr; <span style="background: hsl(201, 100%, 39%);" class="tiny-sample"></span> hsl(201, 100%, 39%)
-        </span>
-        <span class="next">
-            &rarr; <span style="background: hsl(201, 100%, 59%);" class="tiny-sample"></span> hsl(201, 100%, 59%)
-        </span>
-        <span class="next">
-            &rarr; <span style="background: #2eb6ff;" class="tiny-sample"></span> #2EB6FF
-        </span>
-    </p>
-</section>
-
-<section class="slide">
-    <h2><a href="https://github.com/mistakster/postcss-themes-generator">postcss-themes-generator</a></h2>
-    <ol>
-        <li>Плагин позволил команде поддерживать чистый и компактный CSS.</li>
-        <li>Плагин обрабатывает оттенки базовых цветов.</li>
-        <li>Сгенерированные стили работают в старых браузерах.</li>
-    </ol>
-</section>
-
-<section class="slide">
-    <h2 class="shout">
-        <span class="b">Abstract</span>
-        <span class="b">Syntax</span>
-        <span class="b">Tree</span>
-    </h2>
-</section>
-
-<section class="slide clear">
-    <img src="img/ast-explorer.png" class="cover w">
-    <!--
-    https://astexplorer.net/#/gist/43328fc584ad1b12b54120222632a8d2/c8722503e6fb77d6a4163d7b14617946facffcb2
-    -->
-</section>
-
-<section class="slide">
-    <p style="position: absolute; z-index: 1; color: white;">James Steinbach</p>
-    <h2 class="shout"><a href="https://dockyard.com/blog/2018/02/01/writing-your-first-postcss-plugin">
-        Writing Your First PostCSS Plugin
-    </a></h2>
 </section>
 
 <section class="slide" id="contacts">
@@ -904,7 +478,7 @@ a { color: <mark>#556832</mark>; }
     </p>
     <p>
         Слайды презентации:
-        <a href="https://bit.ly/ft18-cm">bit.ly/ft18-cm</a>
+        <a href="https://mistakster.github.io/frontendconf-postcss-plugin/">mistakster.github.io/frontendconf-postcss-plugin</a>
     </p>
 </section>
 
@@ -915,52 +489,5 @@ a { color: <mark>#556832</mark>; }
 <div class="progress"></div>
 
 <script src="shower/shower.min.js"></script>
-<script>
-    'use strict';
-
-    (function () {
-        const coverElement = document.getElementById('cover');
-        const params = [[2500, 3300], [3100, 2100], [2900, 2700]];
-        const start = Math.random() * 1e8 + 1e6;
-        let isRunning = false;
-
-        function frame(t) {
-            for (let i = 0; i < params.length; i++) {
-                const x = Math.round(300 * Math.cos(t / params[i][0]));
-                const y = Math.round(200 * Math.sin(t / params[i][1]));
-                coverElement.style.setProperty('--spot-' + i + '-x', x + 'px');
-                coverElement.style.setProperty('--spot-' + i + '-y', y + 'px');
-            }
-        }
-
-        function loop() {
-            window.requestAnimationFrame(function (time) {
-                frame(time + start);
-                if (isRunning) {
-                    loop();
-                }
-            });
-        }
-
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.target.classList.contains('active')) {
-                    if (isRunning) {
-                        return;
-                    }
-                    isRunning = true;
-                    loop();
-                } else {
-                    isRunning = false;
-                }
-            });
-        });
-
-        observer.observe(coverElement, {
-            attributes: true
-        });
-    }());
-</script>
-
 </body>
 </html>
