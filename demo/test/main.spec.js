@@ -16,7 +16,7 @@ function process(css, options) {
 
 // https://jestjs.io/docs/en/api
 describe('Smart color replacer', () => {
-  it('should work', () => {
+  it('should work for keyword', () => {
     const options = {
       from: 'darkslategray',
       to: '#556832',
@@ -27,6 +27,22 @@ describe('Smart color replacer', () => {
     return process(css, options)
       .then(result => {
         // https://jestjs.io/docs/en/expect
+        expect(result).toBe(
+          'div { color: #556832; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for hex', () => {
+    const options = {
+      from: 'darkslategray',
+      to: '#556832',
+    };
+
+    const css = 'div { color: #2F4F4F; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
         expect(result).toBe(
           'div { color: #556832; } p { background: black; }'
         );
