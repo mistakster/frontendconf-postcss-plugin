@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "postcss-smart-color-replacer",
+  "version": "1.0.0",
+  "description": "A plugin to replace one color with another color",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Vladimir Kuznetsov",
+    "email": "mistakster@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "css-tree": "^1.0.0-alpha.29",
+    "parse-color": "^1.0.0",
+    "postcss": "^7.0.4"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
