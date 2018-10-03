@@ -48,4 +48,36 @@ describe('Smart color replacer', () => {
         );
       });
   });
+
+  it('should work for shorthand properties and keywords', () => {
+    const options = {
+      from: 'darkslategray',
+      to: '#556832',
+    };
+
+    const css = 'div { border: 1px solid darkslategray; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #556832; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties and hex colors', () => {
+    const options = {
+      from: 'darkslategray',
+      to: '#556832',
+    };
+
+    const css = 'div { border: 1px solid #2F4F4F; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #556832; } p { background: black; }'
+        );
+      });
+  });
 });

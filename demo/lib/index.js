@@ -1,9 +1,22 @@
 const postcss = require('postcss');
+const cssTree = require('css-tree');
 const parseColor = require('parse-color');
 
-const compare = (source) => (target) => (colorType) => (
-  source[colorType] === target[colorType]
-);
+const identifierVisitor = (source) => (target) => (node, item, list) => {
+  if (node.name.toLowerCase() === source.keyword.toLowerCase()) {
+    const data = cssTree.fromPlainObject({
+      type: 'HexColor',
+      value: target.hex.substr(1)
+    });
+    list.replace(item, list.createItem(data));
+  }
+};
+
+const hexColorVisitor = (source) => (target) => (node, item, list) => {
+  if ('#' + node.value.toLowerCase() === source.hex.toLowerCase()) {
+    node.value = target.hex.substr(1);
+  }
+};
 
 /**
  * @param {Object} options
@@ -11,16 +24,25 @@ const compare = (source) => (target) => (colorType) => (
  */
 function plugin(options) {
   const fromColor = parseColor(options.from);
-  const compareSource = compare(fromColor);
+  const toColor = parseColor(options.to);
+  const boundIdentifierVisitor = identifierVisitor(fromColor)(toColor);
+  const boundHexColorVisitor = hexColorVisitor(fromColor)(toColor);
 
   return (root, result) => {
     root.walkDecls(decl => {
-      const declColor = parseColor(decl.value);
-      const comparator = compareSource(declColor);
+      const parsedValue = cssTree.parse(decl.value, { context: 'value' });
 
-      if (comparator('keyword') || comparator('hex')) {
-        decl.value = options.to;
-      }
+      cssTree.walk(parsedValue, {
+        visit: 'Identifier',
+        enter: boundIdentifierVisitor
+      });
+
+      cssTree.walk(parsedValue, {
+        visit: 'HexColor',
+        enter: boundHexColorVisitor
+      });
+
+      decl.value = cssTree.generate(parsedValue);
     });
   };
 }
