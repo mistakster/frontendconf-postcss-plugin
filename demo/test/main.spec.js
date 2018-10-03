@@ -49,10 +49,10 @@ describe('Smart color replacer', () => {
       });
   });
 
-  it('should work for shorthand properties and keywords', () => {
+  it('should work for shorthand properties and (k/k/k)', () => {
     const options = {
       from: 'darkslategray',
-      to: '#556832',
+      to: 'blue',
     };
 
     const css = 'div { border: 1px solid darkslategray; } p { background: black; }';
@@ -60,15 +60,15 @@ describe('Smart color replacer', () => {
     return process(css, options)
       .then(result => {
         expect(result).toBe(
-          'div { border: 1px solid #556832; } p { background: black; }'
+          'div { border: 1px solid blue; } p { background: black; }'
         );
       });
   });
 
-  it('should work for shorthand properties and hex colors', () => {
+  it('should work for shorthand properties (k/k/h)', () => {
     const options = {
       from: 'darkslategray',
-      to: '#556832',
+      to: 'blue',
     };
 
     const css = 'div { border: 1px solid #2F4F4F; } p { background: black; }';
@@ -76,7 +76,103 @@ describe('Smart color replacer', () => {
     return process(css, options)
       .then(result => {
         expect(result).toBe(
-          'div { border: 1px solid #556832; } p { background: black; }'
+          'div { border: 1px solid blue; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties (k/h/k)', () => {
+    const options = {
+      from: 'darkslategray',
+      to: '#0000ff',
+    };
+
+    const css = 'div { border: 1px solid darkslategray; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #0000ff; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties (k/h/h)', () => {
+    const options = {
+      from: 'darkslategray',
+      to: '#0000ff',
+    };
+
+    const css = 'div { border: 1px solid #2F4F4F; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #0000ff; } p { background: black; }'
+        );
+      });
+  });
+  
+  it('should work for shorthand properties (h/k/k)', () => {
+    const options = {
+      from: '#2F4F4F',
+      to: 'blue',
+    };
+
+    const css = 'div { border: 1px solid darkslategray; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid blue; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties (h/k/h)', () => {
+    const options = {
+      from: '#2F4F4F',
+      to: 'blue',
+    };
+
+    const css = 'div { border: 1px solid #2F4F4F; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid blue; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties (h/h/k)', () => {
+    const options = {
+      from: '#2F4F4F',
+      to: '#0000ff',
+    };
+
+    const css = 'div { border: 1px solid darkslategray; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #0000ff; } p { background: black; }'
+        );
+      });
+  });
+
+  it('should work for shorthand properties (h/h/h)', () => {
+    const options = {
+      from: '#2F4F4F',
+      to: '#0000ff',
+    };
+
+    const css = 'div { border: 1px solid #2F4F4F; } p { background: black; }';
+
+    return process(css, options)
+      .then(result => {
+        expect(result).toBe(
+          'div { border: 1px solid #0000ff; } p { background: black; }'
         );
       });
   });
