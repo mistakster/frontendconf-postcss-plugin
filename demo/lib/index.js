@@ -1,16 +1,11 @@
 const postcss = require('postcss');
 
 /**
- * @param options
+ * @param {Object} options
  * @returns {Function}
  */
 function plugin(options) {
   return (root, result) => {
-    root.walkDecls(decl => {
-      if (decl.value === options.from) {
-        decl.value = options.to;
-      }
-    });
   };
 }
 
