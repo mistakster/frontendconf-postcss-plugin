@@ -6,6 +6,11 @@ const postcss = require('postcss');
  */
 function plugin(options) {
   return (root, result) => {
+    root.walkDecls(decl => {
+      if (decl.value === options.from) {
+        decl.value = options.to;
+      }
+    });
   };
 }
 
