@@ -18,11 +18,11 @@ function process(css, options) {
 describe('Smart color replacer', () => {
   it('should work', () => {
     const options = {
-      from: 'red',
+      from: 'darkslategray',
       to: '#556832',
     };
 
-    const css = 'div { color: red; } p { background: black; }';
+    const css = 'div { color: darkslategray; } p { background: black; }';
 
     return process(css, options)
       .then(result => {
